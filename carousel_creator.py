@@ -48,13 +48,21 @@ You are a B2B content strategist and LinkedIn expert.
 Audience: {audience} – {audience_context}
 Tone: {tone}
 
-Turn the following content into a LinkedIn carousel using the format:
-Opening slide: bold statement relative to the audience
-Slide 2: Concise context as to why this topic is important
-Slide 3: Point 1 relative to the audience and tone of voice with up to three bullet points
-Slide 4: Point 2 relative to the audience and tone of voice with up to three bullet points
-Slide 5: Point 3 relative to the audience and tone of voice with up to three bullet points
-Slide 6: twisted loop closing call to action
+Create a 6‑slide LinkedIn carousel. Respond only in JSON with the keys
+`slide1` to `slide6` following this structure:
+
+```
+{{
+  "slide1": "**Bold title statement**",
+  "slide2": "Context setting, up to three short lines.",
+  "slide3": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
+  "slide4": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
+  "slide5": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
+  "slide6": "Twisted loop closing call to action."
+}}
+```
+
+Use Markdown for emphasis but ensure the JSON is valid.
 
 Content:
 {post_text}
@@ -66,11 +74,30 @@ Content:
                 temperature=0.7,
             )
 
-            carousel = response.choices[0].message.content
+            import json, re
+            carousel_raw = response.choices[0].message.content
+            # Remove code fences if present
+            carousel_clean = re.sub(r"^```(?:json)?|```$", "", carousel_raw, flags=re.MULTILINE).strip()
+            try:
+                data = json.loads(carousel_clean)
+            except json.JSONDecodeError:
+                st.error("Failed to parse response. Raw output:")
+                st.text(carousel_raw)
+                st.stop()
+
             st.markdown("### 📊 Your LinkedIn Carousel")
-            slides = [line.strip() for line in carousel.splitlines() if line.strip()][:10]
-            for i, slide in enumerate(slides, start=1):
-                st.markdown(f"**Slide {i}:** {slide}")
+            st.markdown(f"**Slide 1:** {data.get('slide1', '')}")
+            st.markdown(f"**Slide 2:** {data.get('slide2', '')}")
+            for idx in range(3, 6):
+                slide = data.get(f'slide{idx}', {})
+                if isinstance(slide, dict):
+                    st.markdown(f"**Slide {idx}:** {slide.get('heading', '')}")
+                    for bullet in slide.get('bullets', []):
+                        st.markdown(f"- {bullet}")
+                else:
+                    st.markdown(f"**Slide {idx}:** {slide}")
+
+            st.markdown(f"**Slide 6:** {data.get('slide6', '')}")
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
