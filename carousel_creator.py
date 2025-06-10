@@ -51,13 +51,10 @@ Tone: {tone}
 Turn the following content into a LinkedIn carousel using the format:
 Opening slide: bold statement relative to the audience
 Slide 2: Concise context as to why this topic is important
-Slide 3: Point 1 relative to the audience and tone of voice
-Slide 4: Point 2 relative to the audience and tone of voice
-Slide 5: Point 3 relative to the audience and tone of voice
+Slide 3: Point 1 relative to the audience and tone of voice with up to three bullet points
+Slide 4: Point 2 relative to the audience and tone of voice with up to three bullet points
+Slide 5: Point 3 relative to the audience and tone of voice with up to three bullet points
 Slide 6: twisted loop closing call to action
-
-Return one short line per slide, separated by new lines with no bullet points or numbering.
-Only return the slide text.
 
 Content:
 {post_text}
