@@ -1,10 +1,11 @@
 import streamlit as st
+import openai
 from openai import OpenAI
 
 client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 # Get API key from Streamlit secrets
-openai.api_key = st.secrets["general"]["openai_api_key"]
+openai.api_key = st.secrets["openai_api_key"]
 
 st.title("LinkedIn Carousel Creator")
 
@@ -60,19 +61,18 @@ Content:
 {post_text}
 """
 
-        response = client.chat.completions.create(model="gpt-4",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7)
+            response = client.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7,
+            )
 
-        carousel = response.choices[0].message.content
-        st.markdown("### 📊 Your LinkedIn Carousel")
-        st.markdown(carousel)
-
-            # Display each slide
+            carousel = response.choices[0].message.content
             st.markdown("### 📊 Your LinkedIn Carousel")
             for i, slide in enumerate(carousel.strip().split("\n"), start=1):
-                if slide.strip():
-                    st.markdown(f"**Slide {i}:** {slide.strip()}")
+                slide = slide.strip()
+                if slide:
+                    st.markdown(f"**Slide {i}:** {slide}")
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
