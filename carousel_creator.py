@@ -48,14 +48,16 @@ You are a B2B content strategist and LinkedIn expert.
 Audience: {audience} – {audience_context}
 Tone: {tone}
 
-Turn the following content into a LinkedIn carousel.
+Turn the following content into a LinkedIn carousel using the format:
+Opening slide: bold statement relative to the audience
+Slide 2: Concise context as to why this topic is important
+Slide 3: Point 1 relative to the audience and tone of voice
+Slide 4: Point 2 relative to the audience and tone of voice
+Slide 5: Point 3 relative to the audience and tone of voice
+Slide 6: twisted loop closing call to action
 
-Return a structured carousel with:
-- 1 Hook slide
-- 4–5 short, punchy slides
-- 1 CTA slide
-
-Use short, direct lines. Return only the slide text as a list.
+Return one short line per slide, separated by new lines with no bullet points or numbering.
+Only return the slide text.
 
 Content:
 {post_text}
@@ -69,10 +71,9 @@ Content:
 
             carousel = response.choices[0].message.content
             st.markdown("### 📊 Your LinkedIn Carousel")
-            for i, slide in enumerate(carousel.strip().split("\n"), start=1):
-                slide = slide.strip()
-                if slide:
-                    st.markdown(f"**Slide {i}:** {slide}")
+            slides = [line.strip() for line in carousel.splitlines() if line.strip()][:10]
+            for i, slide in enumerate(slides, start=1):
+                st.markdown(f"**Slide {i}:** {slide}")
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
