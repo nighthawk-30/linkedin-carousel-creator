@@ -1,8 +1,9 @@
 import streamlit as st
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 # Get API key from Streamlit secrets
-openai.api_key = st.secrets["openai_api_key"]
 
 st.title("LinkedIn Carousel Creator")
 
@@ -47,13 +48,11 @@ Content:
 {post_text}
 """
 
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7
-        )
+        response = client.chat.completions.create(model="gpt-4",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7)
 
-        carousel = response['choices'][0]['message']['content']
+        carousel = response.choices[0].message.content
         st.markdown("### 📊 Your LinkedIn Carousel")
         st.markdown(carousel)
 
