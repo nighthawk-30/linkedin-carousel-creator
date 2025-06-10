@@ -53,10 +53,15 @@ Content:
             temperature=0.7
         )
 
-        carousel = response['choices'][0]['message']['content']
-        st.markdown("### 📊 Your LinkedIn Carousel")
-        st.markdown(carousel)
+try:
+    carousel = response['choices'][0]['message']['content']
 
+    st.markdown("### 📊 Your LinkedIn Carousel")
+    for i, slide in enumerate(carousel.strip().split("\n"), start=1):
+        st.markdown(f"**Slide {i}:** {slide}")
+
+except Exception as e:
+    st.error(f"Something went wrong: {str(e)}")
 
 # Split response into lines and display each slide cleanly
 for i, slide in enumerate(carousel.strip().split("\n"), start=1):
