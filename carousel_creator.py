@@ -1,11 +1,17 @@
+import os
 import streamlit as st
-import openai
 from openai import OpenAI
 
-client = OpenAI(api_key=st.secrets["openai_api_key"])
+# Get the API key from Streamlit secrets or environment variable
+api_key = st.secrets.get("openai_api_key") or os.getenv("OPENAI_API_KEY")
+if not api_key:
+    st.error(
+        "OpenAI API key not found. Add it to .streamlit/secrets.toml or set the"
+        " OPENAI_API_KEY environment variable."
+    )
+    st.stop()
 
-# Get API key from Streamlit secrets
-openai.api_key = st.secrets["openai_api_key"]
+client = OpenAI(api_key=api_key)
 
 st.title("LinkedIn Carousel Creator")
 
