@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Get API key from Streamlit secrets
-openai.api_key = st.secrets["openai_api_key"]
+openai.api_key = st.secrets["general"]["openai_api_key"]
 
 st.title("LinkedIn Carousel Creator")
 
