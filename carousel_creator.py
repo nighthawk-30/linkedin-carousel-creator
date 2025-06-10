@@ -22,6 +22,29 @@ tone = st.selectbox(
     ["Inspirational", "Challenging", "Championing", "Educational", "Bold"]
 )
 
+tone_descriptions = {
+    "Inspirational": (
+        "Use motivational language that encourages the reader to take positive action "
+        "and highlights success stories."
+    ),
+    "Challenging": (
+        "Adopt a provocative stance that questions the status quo and pushes the reader "
+        "to rethink their assumptions."
+    ),
+    "Championing": (
+        "Sound supportive and enthusiastic, positioning yourself as the reader's advocate "
+        "and celebrating their potential."
+    ),
+    "Educational": (
+        "Maintain a clear, instructive tone that explains concepts step by step, focusing on "
+        "practical takeaways."
+    ),
+    "Bold": (
+        "Be assertive and confident with punchy language that makes strong statements and "
+        "encourages decisive action."
+    ),
+}
+
 submit = st.button("Generate Carousel")
 
 # --- Persona Descriptions ---
@@ -42,11 +65,12 @@ if submit and post_text:
         try:
             # Build prompt with context
             audience_context = persona_descriptions.get(audience, audience)
+            tone_context = tone_descriptions.get(tone, "")
             prompt = f"""
 You are a B2B content strategist and LinkedIn expert.
 
 Audience: {audience} – {audience_context}
-Tone: {tone}
+Tone: {tone} – {tone_context}
 
 Create a 6‑slide LinkedIn carousel. Respond only in JSON with the keys
 `slide1` to `slide6` following this structure:
