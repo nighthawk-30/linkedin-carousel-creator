@@ -14,7 +14,7 @@ post_text = st.text_area("Paste your blog post, article, or podcast transcript h
 
 audience = st.selectbox(
     "Who is this for?",
-    ["SME leaders", "Investors"]
+    ["SME leaders", "Investors", "Bold Mover"]
 )
 
 tone = st.selectbox(
@@ -56,6 +56,11 @@ persona_descriptions = {
     "Investors": (
         "an investor looking for high-growth opportunities. They value insight "
         "into performance, risk, and scalability, and prefer strategic, data-driven thinking."
+    ),
+    "Bold Mover": (
+        "a decisive operator ready to take bold risks for outsized growth. "
+        "Their goal is to break through the noise with unconventional strategies "
+        "and achieve noticeable results fast."
     )
 }
 
@@ -72,17 +77,15 @@ You are a B2B content strategist and LinkedIn expert.
 Audience: {audience} – {audience_context}
 Tone: {tone} – {tone_context}
 
-Create a 6‑slide LinkedIn carousel. Respond only in JSON with the keys
-`slide1` to `slide6` following this structure:
+Create a LinkedIn carousel with up to 12 slides. Decide how many slides and bullet points each slide needs. Respond only in JSON using keys `slide1`, `slide2`, etc. Follow this structure:
 
 ```
 {{
   "slide1": "**Bold title statement**",
   "slide2": "Context setting, up to three short lines.",
-  "slide3": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
-  "slide4": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
-  "slide5": {{"heading": "Opening line", "bullets": ["pt1", "pt2", "pt3"]}},
-  "slide6": "Twisted loop closing call to action."
+  "slide3": {{"heading": "Opening line", "bullets": ["pt1", "pt2"]}},
+  ...,
+  "slideN": "Twisted loop closing call to action."
 }}
 ```
 
@@ -110,18 +113,17 @@ Content:
                 st.stop()
 
             st.markdown("### 📊 Your LinkedIn Carousel")
-            st.markdown(f"**Slide 1:** {data.get('slide1', '')}")
-            st.markdown(f"**Slide 2:** {data.get('slide2', '')}")
-            for idx in range(3, 6):
-                slide = data.get(f'slide{idx}', {})
+            for idx in range(1, 13):
+                key = f'slide{idx}'
+                if key not in data:
+                    continue
+                slide = data[key]
                 if isinstance(slide, dict):
                     st.markdown(f"**Slide {idx}:** {slide.get('heading', '')}")
                     for bullet in slide.get('bullets', []):
                         st.markdown(f"- {bullet}")
                 else:
                     st.markdown(f"**Slide {idx}:** {slide}")
-
-            st.markdown(f"**Slide 6:** {data.get('slide6', '')}")
 
         except Exception as e:
             st.error(f"Something went wrong: {str(e)}")
