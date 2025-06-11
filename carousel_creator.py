@@ -58,9 +58,11 @@ persona_descriptions = {
         "into performance, risk, and scalability, and prefer strategic, data-driven thinking."
     ),
     "Bold Mover": (
-        "a decisive operator ready to take bold risks for outsized growth. "
-        "Their goal is to break through the noise with unconventional strategies "
-        "and achieve noticeable results fast."
+        "The Bold Mover is a forward-thinking business leader—often a founder, CEO, or senior exec—in a fast-growing company. They’re ambitious, restless, and focused on scaling up, acquiring, or preparing for investment or exit. They're not afraid to experiment, especially with tech and data, but they demand clear outcomes and speed."
+        "Core Traits: Decisive and growth-focused, Comfortable with calculated risk, Curious about AI, data, and automation—but not technical, Values expertise, but expects agility and straight talk, Balances vision with commercial pressure"
+        "Pain Points: Lack of clarity on how to use AI or data to actually drive growth, Frustrated by slow agencies or vague consultants, Pressure to hit big targets with lean teams"
+        "Goals: Use smart tools (like AI agents) to gain a competitive edge, Simplify decision-making with better insights, Scale fast, raise funding, or prep for sale"
+        "What They Want from Us: Clear, fast answers—not theory, Tools, not just slides, Partners who get business, not just tech"
     )
 }
 
